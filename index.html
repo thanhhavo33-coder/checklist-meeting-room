@@ -2591,8 +2591,34 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 </div>
 
 <div class="toast" id="toast"></div>
+   <script>
+function handleSave() {
+  const checker = document.getElementById("saveName")?.value || "Unknown";
 
-<script>
+  const data = {
+    checker: checker,
+    date: new Date().toISOString(),
+    summary: "Checklist meeting room",
+    failRooms: [], // sau này bạn map thật
+    allRooms: []
+  };
+
+  localStorage.setItem("checklist_backup", JSON.stringify(data));
+
+  fetch("https://script.google.com/macros/s/AKfycbzsZ8ZAABcmoXsxZFl_nTYEKitrFMfcfOLrb0pKXdUv2EjdS_BwF2VOmy3AFJVXTyY/exec", {
+    method: "POST",
+    body: JSON.stringify(data)
+  })
+  .then(res => res.json())
+  .then(() => {
+    alert("✅ Đã lưu thành công!");
+  })
+  .catch(err => {
+    console.error(err);
+    alert("⚠️ Lỗi mạng - đã lưu local");
+  });
+}
+   </script>
 // ══════════════════════════════════════════════
 //  ROOMS DATA
 // ══════════════════════════════════════════════
